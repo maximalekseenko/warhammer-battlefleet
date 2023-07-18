@@ -13,3 +13,9 @@ _deps
 
 # Mac
 .DS_Store
+
+# Build
+build
+
+# vscode settings
+.vscode
