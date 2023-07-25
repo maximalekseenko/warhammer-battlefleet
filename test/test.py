@@ -9,17 +9,17 @@ VECTOR_LEN = 35
 
 
 
-start_point = (SCREEN_WIDTH * 1/5, SCREEN_HEIGHT * 2/4)
-start_angle = math.pi / 4
-end_point = (start_point[0] + 50, start_point[1] + 10)
+start_point = (SCREEN_WIDTH * 1/2, SCREEN_HEIGHT * 1/2)
+start_angle = math.pi / 2
+end_point = (0,0)
 
 path_len = 5
 path_points = []
 
 
-path_distance_min = 10
+path_distance_min = 50
 path_distance_max = 100
-path_angle_max = math.pi
+path_angle_max = math.pi/2
 
 add_to_log = {}
 def To_Log():
@@ -38,7 +38,6 @@ def To_Log():
 def Make_Path():
     path_points.clear()
 
-    # [check for curve here]
 
     # /ALL CALCULATIONS DONE RELATIVE TO STARTING POINT\
     # relative target point (p, q) = (x1 - x2, y1 - y2)
@@ -49,6 +48,11 @@ def Make_Path():
     # line: ax + by = 0
     _a = math.sin(start_angle + math.pi / 2)
     _b = math.cos(start_angle + math.pi / 2)
+
+
+    # [check for curve here]
+    if _b * _p == _a * _q:
+        return
 
     # find center of rotation circle (path)
     # t = (p^2 + q^2) / (2bp - 2aq)  node:formula came from fact, 
@@ -63,8 +67,12 @@ def Make_Path():
     _r = math.sqrt((_b * _t) * (_b * _t) + (_a * _t) * (_a * _t))
 
     # find path angle and distance
-    _path_angle = math.atan2(_o[0] - _p, _o[1] - _q) - math.atan2(_o[0], _o[1])
-    _path_distance = _path_angle * _r
+    _angA = math.atan2(_p-_o[0], _q-_o[1])
+    _angB = math.atan2(-_o[0], -_o[1])
+    _path_angle = (_angA - _angB) % (2*math.pi)
+    if _angB < 0: _path_angle = _path_angle - 2*math.pi
+
+    _path_distance = abs(_path_angle * _r)
     # \ALL CALCULATIONS DONE RELATIVE TO STARTING POINT/
 
     # actual center
@@ -72,6 +80,12 @@ def Make_Path():
 
     # /DELETE\
     add_to_log["ACen"] = _center[0], _center[1]
+    add_to_log["pDist"] = _path_distance
+    add_to_log["angA"] = _angA
+    add_to_log["angB"] = _angB
+    # add_to_log["pAng1"] = _path_angle1
+    # add_to_log["pAng2"] = _path_angle2
+    add_to_log["pAng"] = _path_angle
     add_to_log["rad"] = _r
     # \DELETE/
 
@@ -80,7 +94,7 @@ def Make_Path():
 
     _step_angle = _path_angle / path_len
     _cur_angle = start_angle
-    _point_angle = math.atan2(-_o[0], -_o[1])
+    _point_angle = math.atan2(-_o[1], -_o[0])
     _cur_point = (start_point[0], start_point[1])
 
     for _i in range(path_len):
@@ -113,9 +127,14 @@ def Render():
     # ENDPOINT
     pygame.draw.circle(screen, "#00aa00", end_point, POINT_WIDTH)
 
+    _to_log = To_Log()
+    _color = "#0000aa" if (
+        path_distance_min <= _to_log["pDist"] <= path_distance_max and
+        abs(_to_log["pAng"]) < path_angle_max
+    ) else "#aa0000"
     for _point, _angle in path_points:
-        pygame.draw.circle(screen, "#0000aa", _point, POINT_WIDTH / 2)
-        pygame.draw.line(screen, "#0000aa", _point, (
+        pygame.draw.circle(screen, _color, _point, POINT_WIDTH / 2)
+        pygame.draw.line(screen, _color, _point, (
             _point[0] + math.cos(_angle) * VECTOR_LEN,
             _point[1] + -math.sin(_angle) * VECTOR_LEN, 
         ))
@@ -130,6 +149,7 @@ def Render():
         _log_text_offset += _text_rect.height
 
     pygame.draw.circle(screen, "#aaaaaa", _to_log["ACen"], POINT_WIDTH)
+
     pygame.draw.circle(screen, "#aaaaaa", _to_log["ACen"], _to_log["rad"],1)
 
 
@@ -153,8 +173,10 @@ while is_running:
 
         elif event.type == pygame.MOUSEMOTION:
             end_point = event.pos
-            Make_Path()
 
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                start_angle = math.atan2(end_point[0] - start_point[0], end_point[1] - start_point[1]) - math.pi/2
         # elif event.type == pygame.KEYUP:
         #     if event.key == pygame.K_UP: v_cur += 1
         #     if event.key == pygame.K_DOWN: v_cur -= 1
@@ -163,6 +185,7 @@ while is_running:
 
         else: print(event)
 
+    Make_Path()
     # render
     Render()
 
