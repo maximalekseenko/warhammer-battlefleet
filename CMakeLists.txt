@@ -64,7 +64,7 @@ set(__CLIENT_SRCS
 )
 
 set(__CLIENT_LIBS
-    SDL3
+    SDL3::SDL3
     SDL3_image
     # sfml-graphics
     # ${SFML_LIBRARIES}
