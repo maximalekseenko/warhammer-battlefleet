@@ -19,28 +19,38 @@ set(CMAKE_COLOR_DIAGNOSTICS ON)
 
 
 include(FetchContent)
+Set(FETCHCONTENT_QUIET FALSE)
 
 # |--------------------------------------------------|
 # |                 +++LIBRARIES+++                  |
 # |--------------------------------------------------|
 
-# find_package(SDL2 REQUIRED)
-# include_directories(${SDL2_INCLUDE_DIRS})
-# find_package(SDL2_image REQUIRED)
-# include_directories(${SDL2_IMAGE_INCLUDE_DIRS})
 
-# find_package(SFML REQUIRED)
-# include_directories(${SFML_INCLUDE_DIRS})
+# /SDL\
+if(NOT EXISTS _deps/sdl-src)
+    message(WARNING "SDL library not found")
+endif()
+FetchContent_Declare(SDL
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL
+    GIT_TAG "main"
+    GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(SDL)
+message(STATUS "SDL library found")
+# \SDL/
 
-# /SFML\
-message(STATUS "Downloading SFML")
-FetchContent_Declare(SFML
-    GIT_REPOSITORY https://github.com/SFML/SFML.git
-    GIT_TAG 2.6.x)
-FetchContent_MakeAvailable(SFML)
-message(STATUS "Downloaded SFML")
-# \SFML/
 
+# /SDL_IMAGE\
+if(NOT EXISTS _deps/sdl_image-src)
+    message(WARNING "SDL_IMAGE library not found")
+endif()
+FetchContent_Declare(SDL_IMAGE
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
+    GIT_TAG "main"
+    GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(SDL_IMAGE)
+# \SDL_IMAGE/
 
 # |--------------------------------------------------|
 # |                   +++CLIENT+++                   |
@@ -54,7 +64,9 @@ set(__CLIENT_SRCS
 )
 
 set(__CLIENT_LIBS
-    sfml-graphics
+    SDL3
+    SDL3_image
+    # sfml-graphics
     # ${SFML_LIBRARIES}
     # ${SDL2_LIBRARIES}
     # ${SDL2_IMAGE_LIBRARIES}
