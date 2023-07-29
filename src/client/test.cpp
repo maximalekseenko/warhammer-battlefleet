@@ -1,14 +1,37 @@
-#include <SDL3/SDL.h>
-#include <SDL3/SDL_image.h>
-#include <SDL3/SDL_timer.h>
+#include <SDL.h>
+#include <SDL_timer.h>
+#include <SDL_image.h>
+#include "../common/data/imerial.h"
+#include "../common/objects/vessel.h"
+
+
+SDL_Texture* LoadTexture(const char* __path, SDL_Renderer* __rend)
+{
+    // creates a surface to load an image into the main memory
+    SDL_Surface* _surface;
  
+    // please provide a path for your image
+    _surface = IMG_Load(__path);
+ 
+    // loads image to our graphics hardware memory.
+    SDL_Texture* _texture = SDL_CreateTextureFromSurface(__rend, _surface);
+ 
+    // clears main-memory
+    SDL_FreeSurface(_surface);
+
+    return _texture;
+}
+ 
+
 int main(int argc, char *argv[])
 {
+    Vessel v1{};
  
     // returns zero on success else non-zero
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         printf("error initializing SDL: %s\n", SDL_GetError());
     }
+
     SDL_Window* win = SDL_CreateWindow("GAME", // creates a window
                                        SDL_WINDOWPOS_CENTERED,
                                        SDL_WINDOWPOS_CENTERED,
@@ -20,18 +43,10 @@ int main(int argc, char *argv[])
  
     // creates a renderer to render our images
     SDL_Renderer* rend = SDL_CreateRenderer(win, -1, render_flags);
- 
-    // creates a surface to load an image into the main memory
-    SDL_Surface* surface;
- 
-    // please provide a path for your image
-    surface = IMG_Load("path");
- 
-    // loads image to our graphics hardware memory.
-    SDL_Texture* tex = SDL_CreateTextureFromSurface(rend, surface);
- 
-    // clears main-memory
-    SDL_FreeSurface(surface);
+
+
+    SDL_Texture* tex = LoadTexture("./vessel.png", rend);
+
  
     // let us control our image position
     // so that we can move it with our keyboard.

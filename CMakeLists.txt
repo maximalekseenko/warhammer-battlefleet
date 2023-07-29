@@ -18,39 +18,39 @@ set(CMAKE_COLOR_DIAGNOSTICS ON)
 # SET(CMAKE_CXX_COMPILER i686-w64-mingw32-g++)
 
 
-include(FetchContent)
-Set(FETCHCONTENT_QUIET FALSE)
-
 # |--------------------------------------------------|
 # |                 +++LIBRARIES+++                  |
 # |--------------------------------------------------|
 
 
-# /SDL\
-if(NOT EXISTS _deps/sdl-src)
-    message(WARNING "SDL library not found")
-endif()
-FetchContent_Declare(SDL
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL
-    GIT_TAG "main"
-    GIT_PROGRESS TRUE
-)
-FetchContent_MakeAvailable(SDL)
-message(STATUS "SDL library found")
-# \SDL/
+# # /SDL\
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+# # \SDL/
 
 
-# /SDL_IMAGE\
-if(NOT EXISTS _deps/sdl_image-src)
-    message(WARNING "SDL_IMAGE library not found")
-endif()
-FetchContent_Declare(SDL_IMAGE
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
-    GIT_TAG "main"
-    GIT_PROGRESS TRUE
+# |--------------------------------------------------|
+# |                   +++COMMON+++                   |
+# |--------------------------------------------------|
+
+
+set(__COMMON_DIR ${CMAKE_SOURCE_DIR}/src/common) 
+
+# +++ DATA +++
+set(__COMMON_DATA_SRCS 
+    ${__COMMON_DIR}/data/imperial.h
 )
-FetchContent_MakeAvailable(SDL_IMAGE)
-# \SDL_IMAGE/
+
+# +++ LOGICA +++
+# set(__COMMON_LOGIC_SRCS 
+#   ${__COMMON_DIR}/logic.cpp
+# )
+
+# +++ OBJECT +++
+set(__COMMON_DATA_SRCS 
+    ${__COMMON_DIR}/objects/vesseltype.h
+)
+
 
 # |--------------------------------------------------|
 # |                   +++CLIENT+++                   |
@@ -64,12 +64,8 @@ set(__CLIENT_SRCS
 )
 
 set(__CLIENT_LIBS
-    SDL3::SDL3
-    SDL3_image
-    # sfml-graphics
-    # ${SFML_LIBRARIES}
-    # ${SDL2_LIBRARIES}
-    # ${SDL2_IMAGE_LIBRARIES}
+    SDL2::SDL2
+    SDL2_image::SDL2_image
 )
 
 add_executable(client ${__CLIENT_SRCS})
