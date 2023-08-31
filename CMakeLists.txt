@@ -1,21 +1,14 @@
 cmake_minimum_required(VERSION 3.8)
 project(warhammer-battlefleet VERSION 0.1)
 
-set(__BUILD_DIR ${CMAKE_SOURCE_DIR}/build)
 set(__SRC_DIR ${CMAKE_SOURCE_DIR}/src)
-set(__LIB_DIR ${CMAKE_SOURCE_DIR}/src/libs)
+set(__DATA_DIR ${CMAKE_SOURCE_DIR}/data)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${__BUILD_DIR})
-set(CMAKE_COLOR_DIAGNOSTICS ON)
+# set(CMAKE_COLOR_DIAGNOSTICS ON)
 
-# set(CMAKE_SYSTEM_NAME Windows)
-# set(CMAKE_SYSTEM_PROCESSOR x86_64)
-
-# SET(CMAKE_C_COMPILER i686-w64-mingw32-gcc)
-# SET(CMAKE_CXX_COMPILER i686-w64-mingw32-g++)
 
 
 # |--------------------------------------------------|
@@ -23,65 +16,69 @@ set(CMAKE_COLOR_DIAGNOSTICS ON)
 # |--------------------------------------------------|
 
 
-# # /SDL\
+
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
-# # \SDL/
-
-
-# |--------------------------------------------------|
-# |                   +++COMMON+++                   |
-# |--------------------------------------------------|
-
-
-set(__COMMON_DIR ${CMAKE_SOURCE_DIR}/src/common) 
-
-# +++ DATA +++
-set(__COMMON_DATA_SRCS 
-    ${__COMMON_DIR}/data/imperial.h
-)
-
-# +++ LOGICA +++
-# set(__COMMON_LOGIC_SRCS 
-#   ${__COMMON_DIR}/logic.cpp
-# )
-
-# +++ OBJECT +++
-set(__COMMON_DATA_SRCS 
-    ${__COMMON_DIR}/objects/vesseltype.h
-)
-
-
-# |--------------------------------------------------|
-# |                   +++CLIENT+++                   |
-# |--------------------------------------------------|
-
-
-set(__CLIENT_DIR ${CMAKE_SOURCE_DIR}/src/client) 
-
-set(__CLIENT_SRCS 
-    ${__CLIENT_DIR}/test.cpp
-)
-
 set(__CLIENT_LIBS
     SDL2::SDL2
     SDL2_image::SDL2_image
 )
 
+
+
+# |--------------------------------------------------|
+# |                    +++SRCS+++                    |
+# |--------------------------------------------------|
+
+
+
+# set(__OBJECT_SRCS
+#     ${__SRC_DIR}/object/armament.h
+#     ${__SRC_DIR}/object/vessel.h
+#     ${__SRC_DIR}/object/vesseltype.h
+# )
+# set(__SETTINGS_SRCS
+#     ${__SRC_DIR}/settings/settings.h
+# )
+set(__SRCS
+    ${__SRC_DIR}/window.cpp
+    ${__SRC_DIR}/renderer.cpp
+    ${__SRC_DIR}/init.cpp
+    ${__SRC_DIR}/loop.cpp
+    ${__SRC_DIR}/debug.cpp
+)
+
+
+set(__CLIENT_SRCS
+    ${__SRC_DIR}/client/main.cpp
+
+    ${__SRCS}
+)
+
+
+
+# |--------------------------------------------------|
+# |                   +++BUILDS+++                   |
+# |--------------------------------------------------|
+
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${__BUILD_DIR})
+
+# add_definitions(-D CLIENT=${COMMIT_VERSION})
 add_executable(client ${__CLIENT_SRCS})
 target_link_libraries (client ${__CLIENT_LIBS})
 install(TARGETS client)
 
+add_executable(server ${__CLIENT_SRCS})
+target_link_libraries (server ${__CLIENT_LIBS})
+install(TARGETS server)
+
+
 
 # |--------------------------------------------------|
-# |                   +++SERVER+++                   |
+# |                    +++DATA+++                    |
 # |--------------------------------------------------|
 
 
-# set(__SERVER_DIR ${CMAKE_SOURCE_DIR}/src/server) 
 
-# set(__SERVER_SRCS 
-#     # ${__SERVER_DIR}/armament.h
-# )
-
-# add_executable(server ${__SERVER_SRCS})
+file(COPY ${__DATA_DIR} DESTINATION ${__BUILD_DIR})

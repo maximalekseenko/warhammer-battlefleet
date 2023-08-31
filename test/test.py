@@ -8,7 +8,7 @@ SCREEN_HEIGHT = 480
 VECTOR_LEN = 35
 DIFF = 0.001
 
-
+# https://www.desmos.com/calculator/wsjrsv3k0l
 
 start_point = (SCREEN_WIDTH * 1/2, SCREEN_HEIGHT * 1/2)
 start_angle = math.pi / 2

@@ -16,7 +16,8 @@ CPackSourceConfig.cmake
 # Mac
 .DS_Store
 
-# Build
+# Build and bin
+bin
 build
 
 # vscode settings

@@ -22,6 +22,6 @@ struct Vessel
 
     // +++ INSTANCE VARIABLES +++
     VesselState CurrentState;
-    VesselState TrurnStates[TURNSTEPSLIMIT];
-    
+    VesselState TurnStates[TURNSTEPSLIMIT];
+
 };
