@@ -1,0 +1,12 @@
+{
+    "typeAcquisition": {
+        "include": [
+            "jquery"
+        ]
+    },
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+        }
+    },
+}

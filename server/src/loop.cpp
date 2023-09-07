@@ -25,8 +25,7 @@ namespace loop
 
     int Loop()
     {
-        debug::Log("asdasd");
-        // renderer::Render();
+        renderer::Render();
         SDL_Event event;
  
         // Events management

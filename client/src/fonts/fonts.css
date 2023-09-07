@@ -1,0 +1,24 @@
+@font-face { /*Caslon Antique*/
+    font-family: "Caslon-Antique";
+    src: url("./CaslonAntique.ttf") format("truetype");
+}
+@font-face { /*Caslon Antique - Bold*/
+    font-family: "Caslon-Antique";
+    font-weight: bold;
+    src: url("./CaslonAntique-Bold.ttf") format("truetype");
+}
+@font-face { /*Caslon Antique - Italic*/
+    font-family: "Caslon-Antique";
+    font-style: italic;
+    src: url("./CaslonAntique-Italic.ttf") format("truetype");
+}
+@font-face { /*Caslon Antique - Bold Italic*/
+    font-family: "Caslon-Antique";
+    font-weight: bold;
+    font-style: italic;
+    src: url("./CaslonAntique-BoldItalic.ttf") format("truetype");
+}
+@font-face { /*Old English Text*/
+    font-family: "Old-English-Text";
+    src: url("./oldenglishtextmt.ttf") format("truetype");
+}

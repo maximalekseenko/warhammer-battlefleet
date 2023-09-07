@@ -12,4 +12,6 @@ namespace renderer
     int Deinit();
 
     SDL_Renderer* renderer();
+
+    void Render();
 }
