@@ -5,9 +5,14 @@
 
     margin: 0px;
 
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+    background-color: #100010;
+}
+
+*
+{
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
 
     -webkit-touch-callout: none;
     -webkit-user-select: none;
