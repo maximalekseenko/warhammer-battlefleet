@@ -1,6 +1,0 @@
-set(CMAKE_SYSTEM_NAME Darwin)
-# set(CMAKE_SYSTEM_PROCESSOR )
-# set(CMAKE_C_COMPILER gcc)
-# set(CMAKE_CXX_COMPILER g++)
-
-set(__BUILD_DIR ${CMAKE_SOURCE_DIR}/build/mac)

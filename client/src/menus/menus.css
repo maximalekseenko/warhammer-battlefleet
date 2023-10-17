@@ -78,8 +78,7 @@
 
     margin: 1px;
     position: relative;
-}
-.menu-button::before{
+}.menu-button::before{
     background-color: var(--menu-backcolor-active);
 
     content: "";
@@ -92,11 +91,23 @@
     
     width: 100%;
     height: 100%;
-}
-  
-.menu-button:hover::before{
+}.menu-button:hover::before{
     background-color: var(--menu-backcolor-interact);
 
     width: calc(100% - 3px);
     height: calc(100% - 1px);
+}
+
+.menu-select{
+    width: 100%;
+
+    font-family: Caslon-Antique;
+    text-align: center;
+    color: var(--menu-textcolor-active);
+
+    background-color: transparent;
+    border: 0px none transparent;
+
+    margin: 1px;
+    position: relative;
 }
